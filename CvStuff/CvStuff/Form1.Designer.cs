@@ -35,8 +35,8 @@ namespace CvStuff
             this.button1 = new System.Windows.Forms.Button();
             this.OutputBox = new Emgu.CV.UI.ImageBox();
             this.Mat2 = new Emgu.CV.UI.ImageBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.Mat1 = new Emgu.CV.UI.ImageBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.button2 = new System.Windows.Forms.Button();
@@ -47,12 +47,17 @@ namespace CvStuff
             this.label3 = new System.Windows.Forms.Label();
             this.Spilt = new System.Windows.Forms.Button();
             this.imageBox1 = new Emgu.CV.UI.ImageBox();
-            this.trackBar3 = new System.Windows.Forms.TrackBar();
-            this.trackBar4 = new System.Windows.Forms.TrackBar();
-            this.trackBar5 = new System.Windows.Forms.TrackBar();
-            this.trackBar6 = new System.Windows.Forms.TrackBar();
-            this.trackBar7 = new System.Windows.Forms.TrackBar();
-            this.trackBar8 = new System.Windows.Forms.TrackBar();
+            this.MinR = new System.Windows.Forms.TrackBar();
+            this.MinG = new System.Windows.Forms.TrackBar();
+            this.MinB = new System.Windows.Forms.TrackBar();
+            this.MaxB = new System.Windows.Forms.TrackBar();
+            this.MaxG = new System.Windows.Forms.TrackBar();
+            this.MaxR = new System.Windows.Forms.TrackBar();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.button3 = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.imageBox2 = new Emgu.CV.UI.ImageBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OutputBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Mat2)).BeginInit();
@@ -61,12 +66,13 @@ namespace CvStuff
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MinR)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MinG)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MinB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MaxB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MaxG)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MaxR)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imageBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -75,7 +81,6 @@ namespace CvStuff
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.OutputBox);
             this.panel1.Controls.Add(this.Mat2);
-            this.panel1.Controls.Add(this.comboBox1);
             this.panel1.Controls.Add(this.Mat1);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
@@ -122,15 +127,6 @@ namespace CvStuff
             this.Mat2.TabStop = false;
             this.Mat2.Click += new System.EventHandler(this.Mat2_Click);
             // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(1056, 318);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 23);
-            this.comboBox1.TabIndex = 0;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-            // 
             // Mat1
             // 
             this.Mat1.BackColor = System.Drawing.SystemColors.ActiveCaption;
@@ -142,6 +138,15 @@ namespace CvStuff
             this.Mat1.TabStop = false;
             this.Mat1.Click += new System.EventHandler(this.Mat1_Click);
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(1022, 400);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 23);
+            this.comboBox1.TabIndex = 0;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -150,6 +155,7 @@ namespace CvStuff
             this.label1.Size = new System.Drawing.Size(57, 15);
             this.label1.TabIndex = 11;
             this.label1.Text = "Max, min";
+            this.label1.MouseHover += new System.EventHandler(this.label1_MouseHover);
             // 
             // comboBox2
             // 
@@ -204,7 +210,7 @@ namespace CvStuff
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 1096);
+            this.label2.Location = new System.Drawing.Point(12, 1016);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(30, 15);
             this.label2.TabIndex = 14;
@@ -213,7 +219,7 @@ namespace CvStuff
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 1012);
+            this.label3.Location = new System.Drawing.Point(12, 1096);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(28, 15);
             this.label3.TabIndex = 14;
@@ -231,79 +237,139 @@ namespace CvStuff
             // 
             // imageBox1
             // 
-            this.imageBox1.Location = new System.Drawing.Point(1114, 550);
+            this.imageBox1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.imageBox1.Location = new System.Drawing.Point(921, 487);
             this.imageBox1.Name = "imageBox1";
             this.imageBox1.Size = new System.Drawing.Size(75, 23);
             this.imageBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.imageBox1.TabIndex = 2;
             this.imageBox1.TabStop = false;
             this.imageBox1.Click += new System.EventHandler(this.imageBox1_Click);
+            this.imageBox1.MouseHover += new System.EventHandler(this.imageBox1_MouseHover);
             // 
-            // trackBar3
+            // MinR
             // 
-            this.trackBar3.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.trackBar3.Location = new System.Drawing.Point(873, 832);
-            this.trackBar3.Maximum = 255;
-            this.trackBar3.Name = "trackBar3";
-            this.trackBar3.Size = new System.Drawing.Size(228, 45);
-            this.trackBar3.TabIndex = 16;
+            this.MinR.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.MinR.Location = new System.Drawing.Point(873, 884);
+            this.MinR.Maximum = 255;
+            this.MinR.Name = "MinR";
+            this.MinR.Size = new System.Drawing.Size(228, 45);
+            this.MinR.TabIndex = 16;
+            this.MinR.Scroll += new System.EventHandler(this.MinR_Scroll);
             // 
-            // trackBar4
+            // MinG
             // 
-            this.trackBar4.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.trackBar4.Location = new System.Drawing.Point(873, 883);
-            this.trackBar4.Maximum = 255;
-            this.trackBar4.Name = "trackBar4";
-            this.trackBar4.Size = new System.Drawing.Size(228, 45);
-            this.trackBar4.TabIndex = 17;
+            this.MinG.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.MinG.Location = new System.Drawing.Point(873, 935);
+            this.MinG.Maximum = 255;
+            this.MinG.Name = "MinG";
+            this.MinG.Size = new System.Drawing.Size(228, 45);
+            this.MinG.TabIndex = 17;
+            this.MinG.Scroll += new System.EventHandler(this.MinR_Scroll);
             // 
-            // trackBar5
+            // MinB
             // 
-            this.trackBar5.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.trackBar5.Location = new System.Drawing.Point(873, 934);
-            this.trackBar5.Maximum = 255;
-            this.trackBar5.Name = "trackBar5";
-            this.trackBar5.Size = new System.Drawing.Size(228, 45);
-            this.trackBar5.TabIndex = 18;
+            this.MinB.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.MinB.Location = new System.Drawing.Point(873, 986);
+            this.MinB.Maximum = 255;
+            this.MinB.Name = "MinB";
+            this.MinB.Size = new System.Drawing.Size(228, 45);
+            this.MinB.TabIndex = 18;
+            this.MinB.Scroll += new System.EventHandler(this.MinR_Scroll);
             // 
-            // trackBar6
+            // MaxB
             // 
-            this.trackBar6.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.trackBar6.Location = new System.Drawing.Point(1219, 934);
-            this.trackBar6.Maximum = 255;
-            this.trackBar6.Name = "trackBar6";
-            this.trackBar6.Size = new System.Drawing.Size(228, 45);
-            this.trackBar6.TabIndex = 21;
+            this.MaxB.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.MaxB.Location = new System.Drawing.Point(1219, 986);
+            this.MaxB.Maximum = 255;
+            this.MaxB.Name = "MaxB";
+            this.MaxB.Size = new System.Drawing.Size(228, 45);
+            this.MaxB.TabIndex = 21;
+            this.MaxB.Scroll += new System.EventHandler(this.MinR_Scroll);
             // 
-            // trackBar7
+            // MaxG
             // 
-            this.trackBar7.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.trackBar7.Location = new System.Drawing.Point(1219, 883);
-            this.trackBar7.Maximum = 255;
-            this.trackBar7.Name = "trackBar7";
-            this.trackBar7.Size = new System.Drawing.Size(228, 45);
-            this.trackBar7.TabIndex = 20;
+            this.MaxG.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.MaxG.Location = new System.Drawing.Point(1219, 935);
+            this.MaxG.Maximum = 255;
+            this.MaxG.Name = "MaxG";
+            this.MaxG.Size = new System.Drawing.Size(228, 45);
+            this.MaxG.TabIndex = 20;
+            this.MaxG.Scroll += new System.EventHandler(this.MinR_Scroll);
             // 
-            // trackBar8
+            // MaxR
             // 
-            this.trackBar8.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.trackBar8.Location = new System.Drawing.Point(1219, 832);
-            this.trackBar8.Maximum = 255;
-            this.trackBar8.Name = "trackBar8";
-            this.trackBar8.Size = new System.Drawing.Size(228, 45);
-            this.trackBar8.TabIndex = 19;
+            this.MaxR.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.MaxR.Location = new System.Drawing.Point(1219, 884);
+            this.MaxR.Maximum = 255;
+            this.MaxR.Name = "MaxR";
+            this.MaxR.Size = new System.Drawing.Size(228, 45);
+            this.MaxR.TabIndex = 19;
+            this.MaxR.Scroll += new System.EventHandler(this.MinR_Scroll);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(921, 848);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(31, 15);
+            this.label4.TabIndex = 22;
+            this.label4.Text = "Min ";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(1283, 848);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(30, 15);
+            this.label5.TabIndex = 23;
+            this.label5.Text = "Max";
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(1128, 986);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 24;
+            this.button3.Text = "RGB";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click_1);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(1147, 955);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(38, 15);
+            this.label6.TabIndex = 25;
+            this.label6.Text = "label6";
+            // 
+            // imageBox2
+            // 
+            this.imageBox2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.imageBox2.Location = new System.Drawing.Point(292, 577);
+            this.imageBox2.Name = "imageBox2";
+            this.imageBox2.Size = new System.Drawing.Size(75, 23);
+            this.imageBox2.TabIndex = 2;
+            this.imageBox2.TabStop = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1924, 1181);
-            this.Controls.Add(this.trackBar6);
-            this.Controls.Add(this.trackBar7);
-            this.Controls.Add(this.trackBar8);
-            this.Controls.Add(this.trackBar5);
-            this.Controls.Add(this.trackBar4);
-            this.Controls.Add(this.trackBar3);
+            this.Controls.Add(this.imageBox2);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.MaxB);
+            this.Controls.Add(this.MaxG);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.MaxR);
+            this.Controls.Add(this.MinB);
+            this.Controls.Add(this.MinG);
+            this.Controls.Add(this.MinR);
             this.Controls.Add(this.imageBox1);
             this.Controls.Add(this.Spilt);
             this.Controls.Add(this.label3);
@@ -327,12 +393,13 @@ namespace CvStuff
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MinR)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MinG)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MinB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MaxB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MaxG)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MaxR)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imageBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -356,12 +423,17 @@ namespace CvStuff
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Button Spilt;
         private Emgu.CV.UI.ImageBox imageBox1;
-        private System.Windows.Forms.TrackBar trackBar3;
-        private System.Windows.Forms.TrackBar trackBar4;
-        private System.Windows.Forms.TrackBar trackBar5;
-        private System.Windows.Forms.TrackBar trackBar6;
-        private System.Windows.Forms.TrackBar trackBar7;
-        private System.Windows.Forms.TrackBar trackBar8;
+        private System.Windows.Forms.TrackBar MinR;
+        private System.Windows.Forms.TrackBar MinG;
+        private System.Windows.Forms.TrackBar MinB;
+        private System.Windows.Forms.TrackBar MaxB;
+        private System.Windows.Forms.TrackBar MaxG;
+        private System.Windows.Forms.TrackBar MaxR;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label label6;
+        private Emgu.CV.UI.ImageBox imageBox2;
     }
 }
 
