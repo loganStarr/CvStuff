@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace CvStuff
 {
@@ -20,6 +21,12 @@ namespace CvStuff
         Mat SecondMat;
         Mat mat = new Mat();
         Mat Demicract = new Mat();
+        VideoCapture capture;
+        const int cameraIndex = 0;
+
+        //GameManager game = new GameManager();
+        bool toCapture = false; //true if we should capture the hitboxes this turn
+
         public Form1()
         {
             InitializeComponent();
@@ -39,6 +46,8 @@ namespace CvStuff
             comboBox2.Items.Add("InvertedBinary");
             comboBox2.Items.Add("Mask");
             comboBox3.Items.Add("Mat");
+            capture = new VideoCapture(0);
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -447,42 +456,42 @@ namespace CvStuff
 
         private void MinR_Scroll(object sender, EventArgs e)
         {
-            if (button3.Text == "RGB")
-            {
-                MinR.Maximum = 255;
-                MinG.Maximum = 255;
-                MinB.Maximum = 255;
-                MaxR.Maximum = 255;
-                MaxG.Maximum = 255;
-                MaxB.Maximum = 255;
-                var lowerBound = (ScalarArray)new MCvScalar(MinR.Value, MinG.Value, MinB.Value);
-                var upperBound = (ScalarArray)new MCvScalar(MaxR.Value, MaxG.Value, MaxB.Value);
-                Mat temp = Demicract.Clone();
-                CvInvoke.CvtColor(temp, temp, Emgu.CV.CvEnum.ColorConversion.Hsv2Bgr);
-                CvInvoke.InRange(Demicract, lowerBound, upperBound, temp);
-                CvInvoke.BitwiseAnd(Demicract, temp, temp);
-                imageBox1.Image = temp;
-            }
-            else
-            {
-                MinR.Maximum = 360;
-                MinG.Maximum = 100;
-                MinB.Maximum = 100;
-                MaxR.Maximum = 360;
-                MaxG.Maximum = 100;
-                MaxB.Maximum = 100;
-                var lowerBound = (ScalarArray)new MCvScalar(MinR.Value / 2f, MinG.Value * (255 / 100f), MinB.Value * (255 / 100f));
-                var upperBound = (ScalarArray)new MCvScalar(MaxR.Value / 2f, MaxG.Value * (255 / 100f), MaxB.Value * (255 / 100f));
-                Mat temp = Demicract.Clone();
-                CvInvoke.CvtColor(temp, temp, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv);
-                CvInvoke.InRange(Demicract, lowerBound, upperBound, temp);
-                CvInvoke.CvtColor(temp, temp, Emgu.CV.CvEnum.ColorConversion.Gray2Bgr);
-                CvInvoke.BitwiseAnd(Demicract, temp, temp);
-                //Hue: CV: 0 - 180 Hueman: 0 - 360
-                //Saturation: CV: 0 - 255, Human: 0 - 100 
-                //Value: CV: 0 - 255, Human: 0 - 100
-                imageBox1.Image = temp;
-            }
+            //if (button3.Text == "RGB")
+            //{
+            //    MinR.Maximum = 255;
+            //    MinG.Maximum = 255;
+            //    MinB.Maximum = 255;
+            //    MaxR.Maximum = 255;
+            //    MaxG.Maximum = 255;
+            //    MaxB.Maximum = 255;
+            //    var lowerBound = (ScalarArray)new MCvScalar(MinR.Value, MinG.Value, MinB.Value);
+            //    var upperBound = (ScalarArray)new MCvScalar(MaxR.Value, MaxG.Value, MaxB.Value);
+            //    Mat temp = Demicract.Clone();
+            //    CvInvoke.CvtColor(temp, temp, Emgu.CV.CvEnum.ColorConversion.Hsv2Bgr);
+            //    CvInvoke.InRange(Demicract, lowerBound, upperBound, temp);
+            //    CvInvoke.BitwiseAnd(Demicract, temp, temp);
+            //    imageBox1.Image = temp;
+            //}
+            //else
+            //{
+            //    MinR.Maximum = 360;
+            //    MinG.Maximum = 100;
+            //    MinB.Maximum = 100;
+            //    MaxR.Maximum = 360;
+            //    MaxG.Maximum = 100;
+            //    MaxB.Maximum = 100;
+            //    var lowerBound = (ScalarArray)new MCvScalar(MinR.Value / 2f, MinG.Value * (255 / 100f), MinB.Value * (255 / 100f));
+            //    var upperBound = (ScalarArray)new MCvScalar(MaxR.Value / 2f, MaxG.Value * (255 / 100f), MaxB.Value * (255 / 100f));
+            //    Mat temp = Demicract.Clone();
+            //    CvInvoke.CvtColor(temp, temp, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv);
+            //    CvInvoke.InRange(Demicract, lowerBound, upperBound, temp);
+            //    CvInvoke.CvtColor(temp, temp, Emgu.CV.CvEnum.ColorConversion.Gray2Bgr);
+            //    CvInvoke.BitwiseAnd(Demicract, temp, temp);
+            //    //Hue: CV: 0 - 180 Hueman: 0 - 360
+            //    //Saturation: CV: 0 - 255, Human: 0 - 100 
+            //    //Value: CV: 0 - 255, Human: 0 - 100
+            //    imageBox1.Image = temp;
+            //}
             label6.Text = $" {MinR.Value} {MinB.Value} {MinG.Value} ";
         }
         public void Blur()
@@ -500,6 +509,7 @@ namespace CvStuff
             {
                 button3.Text = "RGB";
             }
+            ShapeDection();
         }
         public void Blurr(Mat ogs)
         {
@@ -686,6 +696,158 @@ namespace CvStuff
 
             return NewRectange;
         }
+        public void Toys()
+        {
+            Mat bits = new Mat();
+            OpenFileDialog file = new OpenFileDialog();
+            var done = file.ShowDialog();
+            if (done == DialogResult.OK || done == DialogResult.Yes)
+            {
+                bits = new Mat(file.FileName);
+
+            }
+            Rectangle rec1 = new Rectangle(4, 4, 367, 245);
+            Rectangle rec2 = new Rectangle(4, 252, 367, 245);
+            Mat Roi1 = new Mat(bits, rec1);
+            Mat Roi2 = new Mat(bits, rec2);
+
+            //Threshold(bit1, bit1, MaxB.Value);
+            //Abs diff plus grayscale threshold is the mask, then you find controsers
+            Mat diff = new Mat();
+            CvInvoke.AbsDiff(Roi1, Roi2, diff);
+
+            CvInvoke.CvtColor(diff, diff, Emgu.CV.CvEnum.ColorConversion.Bgr2Gray);
+            CvInvoke.Threshold(diff, diff, 50, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
+            CvInvoke.GaussianBlur(diff, diff, new Size(3, 3), 1);
+
+
+            // fuck off
+            imageBox1.Image = diff;
+            //return;
+
+            VectorOfVectorOfPoint vecs = new VectorOfVectorOfPoint();
+
+            CvInvoke.FindContours(diff, vecs, new Mat(), Emgu.CV.CvEnum.RetrType.External, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxNone);
+
+            for (int i = 0; i < vecs.Size; i++)
+            {
+                //CvInvoke.Rectangle();
+            }
+            CvInvoke.DrawContours(Roi2, vecs, -1, new MCvScalar(200, 0, 0), 5);
+
+
+            imageBox1.Image = Roi2;
+        }
+        public void GrayScale(Bitmap bits)
+        {
+            for (int i = 0; i < bits.Width; i++)
+            {
+                for (int x = 0; x < bits.Height; x++)
+                {
+                    var s = bits.GetPixel(i, x);
+                    int val = (s.R + s.G + s.B) / 3;
+                    bits.SetPixel(i, x, Color.FromArgb(val, val, val));
+                }
+            }
+        }
+        public void Threshold(Bitmap one, Bitmap output, int max)
+        {
+            for (int i = 0; i < one.Width; i++)
+            {
+                for (int x = 0; x < one.Height; x++)
+                {
+                    var Onep = one.GetPixel(i, x);
+                    int R = 0;
+                    int B = 0;
+                    int G = 0;
+                    if (Onep.R > max)
+                    {
+                        R = 255;
+                    }
+                    if (Onep.G > max)
+                    {
+                        G = 255;
+                    }
+                    if (Onep.B > max)
+                    {
+                        B = 255;
+                    }
+                    output.SetPixel(i, x, Color.FromArgb(R, G, B));
+                }
+            }
+        }
+        public void Xor(Bitmap one, Bitmap two, Bitmap output)
+        {
+            for (int i = 0; i < one.Width; i++)
+            {
+                for (int x = 0; x < one.Height; x++)
+                {
+                    var Onep = one.GetPixel(i, x);
+                    var Twop = two.GetPixel(i, x);
+                    output.SetPixel(i, x, Color.FromArgb(Twop.R ^ Onep.R, Twop.G ^ Onep.G, Twop.B ^ Onep.B));
+                }
+            }
+        }
+        public void ShapeDection()
+        {
+            //Grayscale then binary then blur then Contrors
+            Mat bits = new Mat();
+            OpenFileDialog file = new OpenFileDialog();
+            var done = file.ShowDialog();
+            if (done == DialogResult.OK || done == DialogResult.Yes)
+            {
+                bits = new Mat(file.FileName);
+
+            }
+            VectorOfVectorOfPoint vecs = new VectorOfVectorOfPoint();
+            CvInvoke.CvtColor(bits,bits, Emgu.CV.CvEnum.ColorConversion.Bgr2Gray);
+            CvInvoke.Threshold(bits, bits, 80, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
+            CvInvoke.Blur(bits,bits,new Size(3,3), Location);
+            CvInvoke.FindContours(bits, vecs, new Mat(), Emgu.CV.CvEnum.RetrType.External, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxNone);
+
+            // Archlenght is perimeter area is contour area
+            for (int i = 0; i < vecs.Size; i++)
+            {
+                Rectangle boudingRect = CvInvoke.BoundingRectangle(vecs[i]);
+                RotatedRect Roated = CvInvoke.MinAreaRect(vecs[i]);
+                //bool isRotated = (bool)(Roated.Height % 90);
+
+                double space = CvInvoke.ContourArea(vecs[i]);
+                double permiter = CvInvoke.ContourArea(vecs[i]);
+                var NewContror = new VectorOfPoint();
+                string s = "";
+                CvInvoke.ApproxPolyDP(vecs[i], NewContror, 10, true);
+                if (permiter / boudingRect.Width >= 2 && permiter / boudingRect.Width <= 3.7)
+                {
+                    s = "Circle";
+                }
+                else if (NewContror.Size == 4)
+                {
+                    s = "Rec";
+                }
+                else if (NewContror.Size == 3)
+                {
+                    s = "Triangle";
+                }
+                else if (NewContror.Size == 5)
+                {
+                    s = "Pentagon";
+                }
+                else if (NewContror.Size == 6)
+                {
+                    s = "Hexagon";
+                }
+                else
+                {
+                    s = "Polygon/UNSUB";
+                }
+                CvInvoke.PutText(bits,s,new Point(boudingRect.X,boudingRect.Y),Emgu.CV.CvEnum.FontFace.HersheyComplex,0.5,new MCvScalar(255,0,0),1);
+                
+            }
+            CvInvoke.DrawContours(bits, vecs,-1, new MCvScalar(0,255,0), 5);
+            imageBox1.Image = bits;
+        }
+        public void 
         private void label1_MouseHover(object sender, EventArgs e)
         {
 
